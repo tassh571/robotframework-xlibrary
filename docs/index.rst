@@ -1,9 +1,9 @@
 .. index.rst
 
-.. XpiumLibraryFlutter documentation master file, created by
+.. robotframework-xlibrary documentation master file, created by
    sphinx-quickstart on (date).
 
-Welcome to XpiumLibraryFlutter's documentation!
+Welcome to robotframework-xlibrary's documentation!
 ================================================
 
 .. toctree::

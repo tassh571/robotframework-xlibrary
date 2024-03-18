@@ -10,9 +10,9 @@ sys.path.insert(0, os.path.abspath('../src'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'XpiumLibraryFlutter'
+project = 'robotframework-xlibrary'
 author = 'Tassana Khrueawan'
-version = '0.0.5'
+version = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
 
