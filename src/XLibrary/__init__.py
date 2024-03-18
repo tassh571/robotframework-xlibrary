@@ -1,4 +1,4 @@
-#XpiumLibraryFlutter/__init__.py
+#XLibrary/__init__.py
 # -*- coding: utf-8 -*-
 from robot.api.deco import keyword
 from .main import MainClass
@@ -8,18 +8,18 @@ from .submodule2 import Module21
 from .submodule2 import Module22
 
  
-__all__ = [ 'XpiumLibraryFlutter','MainClass', 'XPrint', 'XDrint','Module21', 'Module22']
+__all__ = [ 'XLibrary','MainClass', 'XPrint', 'XDrint','Module21', 'Module22']
 
 
 
-class XpiumLibraryFlutter(
+class XLibrary(
     MainClass,
     XPrint, 
     XDrint,
     Module21,
     Module22
     ):
-    """ XpiumLibraryFlutter เป็นไลบรารีสำหรับทดสอบแอปพลิเคชัน Flutter บนมือถือด้วย Robot Framework
+    """ XLibrary เป็นไลบรารีสำหรับทดสอบแอปพลิเคชัน Flutter บนมือถือด้วย Robot Framework
         ไลบรารีนี้ได้รับแรงบันดาลใจมาจาก AppiumFlutterLibrary.
 
         == Flutter Finder ==
