@@ -19,32 +19,20 @@ class XLibrary(
     Module21,
     Module22
     ):
-    """ XLibrary เป็นไลบรารีสำหรับทดสอบแอปพลิเคชัน Flutter บนมือถือด้วย Robot Framework
-        ไลบรารีนี้ได้รับแรงบันดาลใจมาจาก AppiumFlutterLibrary.
+    """ XLibrary เป็นไลบรารีสำหรับทดสอบแอปพลิเคชัน แอปทั่วไปบนมือถือ และ Flutter บนมือถือด้วย Robot Framework
+        ไลบรารีนี้ได้รับแรงบันดาลใจมาจาก AppiumFlutterLibrary และ AppiumLibrary.
 
-        == Flutter Finder ==
 
-        คำสั่งทั้งหมดที่ต้องการการโต้ตอบกับอิลิเมนต์จะต้องหาอิลิเมนต์นั้นก่อน ในวัตถุประสงค์นี้ เราจึงมีตัวกำหนดตำแหน่ง (locators)
-        ที่สื่อสารกับฟังก์ชัน findBy ของ FlutterDriver.
 
-        == Locators ==
-
-        โดยปริยาย เมื่อใส่ตัวกำหนดตำแหน่งโดยไม่ระบุ ไลบรารีจะถือว่าตัวกำหนดตำแหน่งนั้นเป็น key ของ FlutterDriver
-        ถ้าคุณต้องการใช้ตัวกำหนดตำแหน่งอื่น คุณจะต้องตั้งค่าตัวระบุนั้นๆ ขึ้นมา
-
-        ตัวอย่าง:
-
-        | Click Element    input-button
-        | Click Element    text=Input
+        | Click Element    Key
+        | Click Element    Text="Text"
 
         ตัวกำหนดตำแหน่งที่สามารถใช้ได้:
 
         | *Locator*    | *Description*                      |
         | key          | key ของอิลิเมนต์ FlutterDriver.       |
         | text         | ข้อความของอิลิเมนต์.                   |
-        | semantics    | ป้ายกำกับ semantics ของอิลิเมนต์        |
-        | tooltip      | ข้อความแจ้งเตือนของอิลิเมนต์             |
-        | type         | ประเภทของอิลิเมนต์                    |
+
     """
 
 
