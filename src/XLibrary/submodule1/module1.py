@@ -4,8 +4,8 @@ from robot.api.deco import keyword
 from .module2 import XDrint
 from robot.libraries.BuiltIn import BuiltIn
 #
-from AppiumFlutterFinder import FlutterFinder
-from AppiumFlutterLibrary import AppiumFlutterLibrary
+from appium_flutter_finder import FlutterFinder
+
 
 class XPrint:
 
