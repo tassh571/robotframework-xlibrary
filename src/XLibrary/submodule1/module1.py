@@ -3,6 +3,9 @@
 from robot.api.deco import keyword
 from .module2 import XDrint
 from robot.libraries.BuiltIn import BuiltIn
+#
+from AppiumFlutterFinder import FlutterFinder
+from AppiumFlutterLibrary import AppiumFlutterLibrary
 
 class XPrint:
 
@@ -40,3 +43,10 @@ class XPrint:
     def _current_application(self):
         """คืนค่าอินสแตนซ์ของแอปพลิเคชันปัจจุบัน"""
         return self._bi.get_library_instance('AppiumFlutterLibrary')._current_application()
+    
+    def Chack_Button_Active(self, key):
+        """เช็คว่า Button Active หรือไม่"""
+        finder = FlutterFinder()
+        button = finder.by_value_key(key)
+        element = self.driver.find_element(button)
+        return element.is_enabled()  
