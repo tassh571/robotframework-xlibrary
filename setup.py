@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="robotframework-xlibrary",
-    version="3.0.1",
+    version="4.0.0",
     author="Tassana Khrueawan",
     author_email="tassana.khr@gmail.com",
     description="Test Library for robotframework-xlibrary",
@@ -12,7 +12,7 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages(where='src'),
     install_requires=[
-        'robotframework>=3.0', 
+        'robotframework>=3.0',
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

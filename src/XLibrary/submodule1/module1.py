@@ -43,35 +43,46 @@ class XPrint(AppiumFlutterLibrary):
 
     @keyword('Is Button Active')
     def is_button_active(self, key):
-        """Check if the button with the given key is active in a Flutter application."""
+        """ตรวจสอบว่าปุ่มที่มีคีย์ที่กำหนดให้นั้น active ในแอปพลิเคชัน Flutter หรือไม่"""
         try:
-            driver = self._current_application() #มีการเพิ่มเข้ามา
+            driver = self._current_application() # มีการเพิ่มเข้ามา
             button = self.finder.by_value_key(key)
-            element = driver.find_element(button)   #ลบ self
+            element = driver.find_element(button)  # ลบ self
             is_visible = element.is_displayed()
             is_enabled = element.is_enabled()
 
             if is_visible and is_enabled:
-                logger.info(f"Button with key '{key}' is active and visible.")
+                logger.info(f"ปุ่มที่มีคีย์ '{key}' นั้น active และมองเห็นได้.")
                 return True
             else:
                 if not is_visible:
-                    logger.warn(f"Button with key '{key}' is not visible.")
+                    logger.warn(f"ปุ่มที่มีคีย์ '{key}' นั้นมองไม่เห็น.")
                 if not is_enabled:
-                    logger.warn(f"Button with key '{key}' is not enabled.")
+                    logger.warn(f"ปุ่มที่มีคีย์ '{key}' นั้นไม่สามารถใช้งานได้.")
                 return False
         except Exception as e:
-            logger.error(f"Error checking if button is active: {e}")
+            logger.error(f"มีข้อผิดพลาดในการตรวจสอบว่าปุ่ม active: {e}")
             return False
 
     @keyword('Wait Until Button Is Active')
     def wait_until_button_is_active(self, key, timeout=10):
-        """Wait until the button with the given key is active in a Flutter application."""
+        """รอจนกว่าปุ่มที่มีคีย์ที่กำหนดจะ active ในแอปพลิเคชัน Flutter"""
         end_time = time.time() + timeout
         while time.time() < end_time:
             if self.is_button_active(key):
                 return True
             time.sleep(1)
 
-        logger.warn(f"Button with key '{key}' did not become active within {timeout} seconds.")
+        logger.warn(f"ปุ่มที่มีคีย์ '{key}' ไม่ได้กลายเป็น active ภายในเวลา {timeout} วินาที.")
         return False
+
+    @keyword('Switch To Flutter Context')
+    def switch_to_flutter_context(self):
+        """เปลี่ยนไปยัง Context ของ Flutter ก่อนที่จะพยายามค้นหา elements."""
+        driver = self._current_application()
+        available_contexts = driver.contexts
+        for context in available_contexts:
+            if 'FLUTTER' in context:
+                driver.switch_to.context(context)
+                return
+        logger.warn("ไม่พบ Context ของ Flutter.")
