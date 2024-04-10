@@ -5,6 +5,7 @@ from robot.libraries.BuiltIn import BuiltIn
 from appium_flutter_finder import FlutterFinder
 from AppiumFlutterLibrary import AppiumFlutterLibrary
 from .module2 import XDrint
+from AppiumFlutterLibrary.finder import ElementFinder
 import time
 
 class XPrint(AppiumFlutterLibrary):
@@ -13,6 +14,8 @@ class XPrint(AppiumFlutterLibrary):
         self._ne = XDrint()
         self._bi = BuiltIn()
         self.finder = FlutterFinder()
+        # self.finder = ElementFinder()
+        self.flyder = ElementFinder()
 
     @keyword("XPrint Log")
     def XPrint_log(self):
@@ -46,11 +49,11 @@ class XPrint(AppiumFlutterLibrary):
         """ตรวจสอบว่าปุ่มที่มีคีย์ที่กำหนดให้นั้น active ในแอปพลิเคชัน Flutter หรือไม่"""
         try:
             driver = self._current_application() # มีการเพิ่มเข้ามา
-            button = self.finder.by_value_key(key)
-            element = driver.find_element(button)  # ลบ self
+            # button = self.finder.by_value_key(key)
+            # element = driver.find_element(button)  # ลบ self
+            element = self.flyder.find(driver,key)
             is_visible = element.is_displayed()
             is_enabled = element.is_enabled()
-
             if is_visible and is_enabled:
                 logger.info(f"ปุ่มที่มีคีย์ '{key}' นั้น active และมองเห็นได้.")
                 return True
