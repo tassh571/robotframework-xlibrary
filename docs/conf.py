@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.abspath('../src'))
 
 project = 'robotframework-xlibrary'
 author = 'Tassana Khrueawan'
-version = '1.0.0'
+version = '2.0.0'
 
 # -- General configuration ---------------------------------------------------
 

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="robotframework-xlibrary",
-    version="1.0.4",
+    version="2.0.0",
     author="Tassana Khrueawan",
     author_email="tassana.khr@gmail.com",
     description="Test Library for robotframework-xlibrary",
