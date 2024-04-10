@@ -45,8 +45,9 @@ class XPrint(AppiumFlutterLibrary):
     def is_button_active(self, key):
         """Check if the button with the given key is active in a Flutter application."""
         try:
+            driver = self._current_application() #มีการเพิ่มเข้ามา
             button = self.finder.by_value_key(key)
-            element = self.driver.find_element(button)
+            element = driver.find_element(button)   #ลบ self
             is_visible = element.is_displayed()
             is_enabled = element.is_enabled()
 
