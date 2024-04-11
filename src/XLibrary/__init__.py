@@ -20,13 +20,12 @@ class XLibrary(
     Module21,
     Module22
     ):
-    """ XLibrary เป็นไลบรารีสำหรับทดสอบแอปพลิเคชัน แอปทั่วไปบนมือถือ และ Flutter บนมือถือด้วย Robot Framework
-        ไลบรารีนี้ได้รับแรงบันดาลใจมาจาก AppiumFlutterLibrary และ AppiumLibrary.
+    """ XLibrary เป็น Library Custom ขึ้้นมาใช้เองโดยเฉพาะ 
 
 
 
-        | Click Element    Key
-        | Click Element    Text="Text"
+        | Click Element |    Key            |
+        | Click Element |    Text="Text"    |
 
         ตัวกำหนดตำแหน่งที่สามารถใช้ได้:
 

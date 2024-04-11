@@ -2,29 +2,28 @@
 from robot.api.deco import keyword
 from robot.api import logger
 from robot.libraries.BuiltIn import BuiltIn
-from appium_flutter_finder import FlutterFinder
 from AppiumFlutterLibrary import AppiumFlutterLibrary
 from .module2 import XDrint
 from AppiumFlutterLibrary.finder import ElementFinder
 import time
+
 
 class XPrint(AppiumFlutterLibrary):
     def __init__(self):
         super().__init__()
         self._ne = XDrint()
         self._bi = BuiltIn()
-        self.finder = FlutterFinder()
-        # self.finder = ElementFinder()
-        self.flyder = ElementFinder()
+        self.finder = ElementFinder()
+
 
     @keyword("XPrint Log")
     def XPrint_log(self):
         print("Hello, world! เทสภาษาไทย111")
 
     def TestModule2(self):
-        instance = XDrint()  # You might consider renaming the variable to something meaningful
-        instance.CDCDCD()    # Assuming CDCDCD is a valid method
-        self._ne.CDCDCD()    # Ensure that _ne has the method CDCDCD
+        instance = XDrint()  
+        instance.CDCDCD()   
+        self._ne.CDCDCD() 
 
     def XQuit_App(self):
         """ปิดแอพปัจจุบันและปิดเซสชัน"""
@@ -51,7 +50,7 @@ class XPrint(AppiumFlutterLibrary):
             driver = self._current_application() # มีการเพิ่มเข้ามา
             # button = self.finder.by_value_key(key)
             # element = driver.find_element(button)  # ลบ self
-            element = self.flyder.find(driver,key)
+            element = self.finder.find(driver,key)
             is_visible = element.is_displayed()
             is_enabled = element.is_enabled()
             if is_visible and is_enabled:
