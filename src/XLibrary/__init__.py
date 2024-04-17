@@ -20,19 +20,9 @@ class XLibrary(
     Module21,
     Module22
     ):
-    """ XLibrary เป็น Library Custom ขึ้้นมาใช้เองโดยเฉพาะ 
-
-
-
-        | Click Element |    Key            |
-        | Click Element |    Text="Text"    |
-
-        ตัวกำหนดตำแหน่งที่สามารถใช้ได้:
-
-        | *Locator*    | *Description*                      |
-        | key          | key ของอิลิเมนต์ FlutterDriver.       |
-        | text         | ข้อความของอิลิเมนต์.                   |
-
+    """ 
+    *` XLibrary เป็น Library Custom ขึ้้นมาใช้เองโดยเฉพาะ`*
+    *`Create By Tassana Khrueawan`*
     """
 
 
