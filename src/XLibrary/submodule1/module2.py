@@ -9,7 +9,7 @@ class XDrint:
     def CDCDCD(self):
         print("Hello, world! เทสภาษาไทย222")
 
-    @keyword("Connect Mongodb With URL")
+    @keyword("XConnect Mongodb With URL")
     def connect_to_mongodb_with_uri(self, dbURI, timeout=10):
         """
         ***|    Description     |***
@@ -38,7 +38,7 @@ class XDrint:
             logging.error("| Fail: การเชื่อมต่อ MongoDB ล้มเหลว | %s |" % str(e))
             raise Exception("การเชื่อมต่อ MongoDB ล้มเหลว: " + str(e))
     
-    @keyword("Query MongoDB")
+    @keyword("XQuery MongoDB")
     def query_mongodb(self, database_name, collection_name, query):
         """
         ***|    Description     |***
@@ -53,7 +53,7 @@ class XDrint:
         ***|    Parameters     |***
             - **`database_name`**  Database NAME.
             - **`collection_name`**  Collection NAME.
-	    - **`query`**  คำสั่ง Query.
+	        - **`query`**  คำสั่ง Query.
 
 
         *`Create By Tassana Khrueawan`*
@@ -64,49 +64,65 @@ class XDrint:
         return list(result)
       
     
-    @keyword("Query Dynamic Characteristic Value")
-    def query_dynamic_characteristic_value(self, result_list, key='None', characteristic_name=None):
+    @keyword("XQuery Dynamic Value")
+    def query_dynamic_value(self, result, field='None', value='None', expect=None):
         """
-        ***คำอธิบาย Description***
-        |   Query Dynamic Characteristic Value   |   Keyword สำหรับ Query ข้อมูลใน key ที่กำหนดและได้ Value ของลักษณะที่ต้องการ |
+        ***|    Description     |***
+        |   *`XQuery Dynamic Value`*   |   เป็น Keyword สำหรับ Query ข้อมูลใน Collection แบบเจาะลงไป |
 
-        ***ตัวอย่างการใช้งาน Example***
-        | ${value} =  Query Dynamic Characteristic Value  ${result}  key  characteristic_name |
-        | key คือชื่อของ field ที่มีลักษณะสินค้า เช่น productCharacteristic |
-        | characteristic_name เช่น number, ratingType, arpu หรือเป็น None ถ้าต้องการทั้ง object |
-        | Log  ${value} |
+        
+        ***|    Example     |***
+        | *`${arpu_value}`* | *`XQuery Dynamic Value`* | *`result`* | *`productCharacteristic`* | *`name`* | *`arpu`* |
+        | *`Log`* | *`${arpu_value}`* |
+
+        
+        ***|    Parameters     |***
+            - **`result`**  ยังไม่ได้ใส่รายละเอียด
+            - **`field`**   ยังไม่ได้ใส่รายละเอียด
+            - **`value`**   ยังไม่ได้ใส่รายละเอียด
+	        - **`expect`**  ยังไม่ได้ใส่รายละเอียด
+
+
+        *`Create By Tassana Khrueawan`*
         """
-        for item in result_list:
-            if key in item and isinstance(item[key], list):
-                if characteristic_name:
-                    for char in item[key]:
-                        if char.get('name') == characteristic_name:
+        for item in result:
+            if field in item and isinstance(item[field], list):
+                if expect:
+                    for char in item[field]:
+                        if char.get(value) == expect:
                             return char.get('value')
                 else:
-                    return item[key]
-        return None  
+                    return item[field]
+        return None
 
-    @keyword("Query Specific Field Value")
-    def query_specific_field_value(self, document, field_name=None):
+    @keyword("XQuery Specific Value")
+    def query_specific_value(self, result, field_name=None):
         """
-        ***คำอธิบาย Description***
-        |   Query Specific Field Value   |   Keyword สำหรับ Query ข้อมูลจาก field ที่กำหนดใน document |
+        ***|    Description     |***
+        |   XQuery Specific Value   |   Keyword สำหรับ Query ข้อมูลใน Collection แบบไม่เจาะลงไป |
 
-        ***ตัวอย่างการใช้งาน Example***
-        | ${value} = Query Specific Field Value ${document} field_name |
-        | field_name เป็นชื่อของ field ที่ต้องการค่า เช่น name, status, productCharacteristic เป็นต้น |
-        | หากไม่ระบุ field_name จะ return ทั้ง document |
-        | Log ${value} |
-        """
-        # Return the whole document if no field_name is provided
-        if not field_name:
-            return document
         
-        # If field_name is provided, navigate through the document to find the value
-        value = document.get(field_name, None)
+        ***|    Example     |***
+        | *`${name}`* | *`XQuery Specific Value`* | *`result`* | *`name`* |
+        | *`Log`* | *`${name}`* |
 
-        # If field_name refers to a list of dictionaries, we may need to handle it differently
-        if isinstance(value, list) and all(isinstance(item, dict) for item in value):
-            return [item.get('value', None) for item in value if 'value' in item]
 
-        return value
+        ***|    Parameters     |***
+            - **`result`**  ยังไม่ได้ใส่รายละเอียด
+            - **`field_name`**   ยังไม่ได้ใส่รายละเอียด
+
+
+        *`Create By Tassana Khrueawan`*
+        """
+        if not field_name:
+            return result
+
+        results = []
+        if isinstance(result, list):
+            for doc in result:
+                if isinstance(doc, dict) and field_name in doc:
+                    results.append(doc[field_name])
+        else:
+            results = result.get(field_name, None)
+
+        return results
