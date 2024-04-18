@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 from robot.api.deco import keyword
-from robot.api import logger
 from robot.libraries.BuiltIn import BuiltIn
-from AppiumFlutterLibrary import AppiumFlutterLibrary
 from .module2 import XDrint
 from AppiumFlutterLibrary.finder import ElementFinder
-import time
 
-
-class XPrint(AppiumFlutterLibrary):
+class XPrint:
     def __init__(self):
         super().__init__()
         self._ne = XDrint()
@@ -30,13 +26,13 @@ class XPrint(AppiumFlutterLibrary):
         driver = self._current_application()
         driver.quit()
 
-    @keyword('Switch Mode')
+    @keyword('XSwitch Mode')
     def XSwitch_Mode(self, mode):
         """Switch Mode to NATIVE_APP OR FLUTTER."""
         driver = self._current_application()
-        if mode == 'NATIVE_APP':
+        if mode == 'NATIVE':
             driver.switch_to.context('NATIVE_APP')
-        elif mode == 'FLUTTER':  # Changed from 'if' to 'elif' for logical correctness
+        elif mode == 'FLUTTER':
             driver.switch_to.context('FLUTTER')
 
     def _current_application(self):
