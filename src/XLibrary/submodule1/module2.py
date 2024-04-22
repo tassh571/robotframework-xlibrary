@@ -6,8 +6,14 @@ import pymongo
 import logging
 
 class XDrint:
+
+    def __init__(self):
+        self._dbconnection = None
+
+
     def CDCDCD(self):
         print("Hello, world! เทสภาษาไทย222")
+
 
     @keyword("XConnect Mongodb With URL")
     def connect_to_mongodb_with_uri(self, dbURI, timeout=10):
@@ -37,31 +43,41 @@ class XDrint:
         except Exception as e:
             logging.error("| Fail: การเชื่อมต่อ MongoDB ล้มเหลว | %s |" % str(e))
             raise Exception("การเชื่อมต่อ MongoDB ล้มเหลว: " + str(e))
+        
+
     
     @keyword("XQuery MongoDB")
-    def query_mongodb(self, database_name, collection_name, query):
+    def query_mongodb(self, database_name, collection_name, query, limit=None, sort=None):
         """
         ***|    Description     |***
-        |   *`Query MongoDB`*   |   เป็น Keyword สำหรับ Query ข้อมูลใน Collection จะได้ทั้งก้อนออกมา |
+        |   *`Query MongoDB`*   |   เป็น Keyword สำหรับ Query ข้อมูลใน Collection พร้อมกับการกำหนดจำนวนข้อมูลสูงสุดและการเรียงลำดับข้อมูล |
 
         
         ***|    Example     |***
-        | *`${result}`* | *`Query MongoDB`* | *`database_name`* | *`collection_name`* | *`Command Query`* | 
+        | *`${result}`* | *`Query MongoDB`* | *`database_name`* | *`collection_name`* | *`Command Query`* | *`limit=5`* | *`sort=[("date", -1)]`* |
         | *`Log`* | *`${result}`* |
 
-
+        
         ***|    Parameters     |***
-            - **`database_name`**  Database NAME.
-            - **`collection_name`**  Collection NAME.
-	        - **`query`**  คำสั่ง Query.
-
+            - **`database_name`**  ชื่อของฐานข้อมูล.
+            - **`collection_name`**  ชื่อของ collection.
+            - **`query`**  คำสั่ง Query.
+            - **`limit`**  (Optional) จำนวนข้อมูลสูงสุดที่ต้องการส่งกลับ.
+            - **`sort`**  (Optional) ลำดับข้อมูล ตัวอย่างเช่น [("field", -1 มากไปน้อย ,  1 น้อยไปมาก)].
 
         *`Create By Tassana Khrueawan`*
         """
         collection = self._dbconnection[database_name][collection_name]
         query_dict = ast.literal_eval(query)
-        result = collection.find(query_dict)
-        return list(result)
+        cursor = collection.find(query_dict)
+        
+        if sort:
+            cursor = cursor.sort(sort)
+        if limit:
+            cursor = cursor.limit(limit)
+
+        results = list(cursor)
+        return results
       
     
     @keyword("XQuery Dynamic Value")
@@ -77,10 +93,10 @@ class XDrint:
 
         
         ***|    Parameters     |***
-            - **`result`**  ยังไม่ได้ใส่รายละเอียด
-            - **`field`**   ยังไม่ได้ใส่รายละเอียด
-            - **`value`**   ยังไม่ได้ใส่รายละเอียด
-	        - **`expect`**  ยังไม่ได้ใส่รายละเอียด
+        - **`result`**  ผลลัพธ์ของการ Query ที่เป็นรายการข้อมูลจาก MongoDB.
+        - **`field`**   ชื่อฟิลด์ในข้อมูลที่ต้องการเจาะลงไป.
+        - **`value`**   ชื่อคีย์ภายในฟิลด์ที่ต้องการเข้าถึง.
+        - **`expect`**  ค่าที่ต้องการเทียบเพื่อหาข้อมูลที่ตรงกับเงื่อนไข.
 
 
         *`Create By Tassana Khrueawan`*
@@ -95,6 +111,7 @@ class XDrint:
                     return item[field]
         return None
 
+
     @keyword("XQuery Specific Value")
     def query_specific_value(self, result, field_name=None):
         """
@@ -108,8 +125,8 @@ class XDrint:
 
 
         ***|    Parameters     |***
-            - **`result`**  ยังไม่ได้ใส่รายละเอียด
-            - **`field_name`**   ยังไม่ได้ใส่รายละเอียด
+        - **`result`**  ผลลัพธ์ของการ Query ที่เป็นรายการข้อมูลจาก MongoDB.
+        - **`field_name`**   ชื่อฟิลด์ที่ต้องการเข้าถึงเพื่อค้นหาค่าภายใน.
 
 
         *`Create By Tassana Khrueawan`*

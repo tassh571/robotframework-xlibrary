@@ -2,10 +2,10 @@ from setuptools import setup, find_packages
 
 setup(
     name="robotframework-xlibrary",
-    version="11.0.2",
+    version="11.0.3",
     author="Tassana Khrueawan",
     author_email="tassana.khr@gmail.com",
-    description="Test Custom Library robotframework-xlibrary",
+    description="Custom Library for MyAIS 2.0 Automation",
     long_description=open('README.md', encoding='utf-8').read(),
     long_description_content_type="text/markdown",
     url="https://github.com/Khrx1999/robotframework-xlibrary.git",
