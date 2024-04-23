@@ -4,6 +4,9 @@ from robot.api.deco import keyword
 import ast
 import pymongo
 import logging
+import bson
+
+
 
 class XDrint:
 
@@ -45,7 +48,6 @@ class XDrint:
             raise Exception("การเชื่อมต่อ MongoDB ล้มเหลว: " + str(e))
         
 
-    
     @keyword("XQuery MongoDB")
     def query_mongodb(self, database_name, collection_name, query, limit=None, sort=None):
         """
@@ -143,3 +145,26 @@ class XDrint:
             results = result.get(field_name, None)
 
         return results
+
+
+    @keyword("XConvert BSON Document to JSON Object")
+    def bson_to_json_object(self, bson_data):
+        """
+        แปลงข้อมูล BSON เป็นอ็อบเจกต์ Python (dictionary หรือ list) โดยไม่ต้องแปลงเป็นสตริง JSON
+
+        พารามิเตอร์:
+        - bson_data: ข้อมูล BSON ในรูปแบบไบต์สตริงหรือดิกชันนารี
+
+        ผลลัพธ์ที่ได้:
+        - อ็อบเจกต์ Python ซึ่งอาจเป็นดิกชันนารีหรือลิสต์ของดิกชันนารีที่แสดงถึงข้อมูล BSON
+
+        ตัวอย่างการใช้งาน:
+        | ${json_object} = | Convert BSON Document to JSON Object | ${bson_data} |
+        """
+        try:
+            if isinstance(bson_data, bytes):
+                bson_data = bson.loads(bson_data)
+            # Convert BSON directly to a Python object without converting to a JSON string
+            return bson_data  # This returns a Python dictionary or list of dictionaries
+        except Exception as e:
+            return f"Failed to convert BSON to JSON object: {str(e)}"
