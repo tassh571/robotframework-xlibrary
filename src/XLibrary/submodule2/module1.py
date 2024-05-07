@@ -2,10 +2,13 @@
 # -*- coding: utf-8 -*-
 import logging
 from robot.api.deco import keyword
+from robot.libraries.BuiltIn import BuiltIn
+from robot.api import logger
 
 class Module21:
     def __init__(self):
         logging.basicConfig(level=logging.INFO, format='%(message)s')
+        self.builtin = BuiltIn()
 
     def PrintTEST21(self):
         """ พิมพ์ข้อความ 'Hello, world!' ลงในคอนโซล แบบไม่ได้แอดคีย์ """
@@ -46,3 +49,24 @@ class Module21:
        *`Create By Tassana Khrueawan`*
         """
         self.log_tree_structure(data)
+
+
+    @keyword("Log Pass")
+    def log_pass(self, message):
+        """
+        ***|    Description     |***
+        |   *`Log Pass`*   |   Log Pass เป็น Keyword สำหรับการทำให้ ข้อความเด่นขึ้น |
+
+
+        ***|    Example     |***
+        | *`Log Pass`* | *`This test passed successfully!`* |
+
+
+        ***|    Parameters     |***
+        - **`message`**  ข้อความ
+
+
+        Created by Tassana Khrueawan
+        """
+        highlighted_message = f'<div style="background-color: green; color: white; padding: 7px;">PASS: {message}</div>'
+        logger.write(highlighted_message, html=True)

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="robotframework-xlibrary",
-    version="11.0.6",
+    version="11.0.7",
     author="Tassana Khrueawan",
     author_email="tassana.khr@gmail.com",
     description="Custom Library for MyAIS 2.0 Automation",
@@ -12,7 +12,9 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages(where='src'),
     install_requires=[
-        'robotframework>=3.0',
+        'robotframework>=6.0.0',
+        'pymongo>=3.0.0',
+        
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
