@@ -21,9 +21,9 @@ project = 'RobotFramework-XLibrary'
 author = 'Tassana Khrueawan'
 copyright = '2024, Tassana Khrueawan'
 # The short X.Y version
-version = '11.0.7'
+version = '11.0.8'
 # The full version, including alpha/beta/rc tags
-release = '11.0.7'
+release = '11.0.8'
 
 # -- General configuration ---------------------------------------------------
 

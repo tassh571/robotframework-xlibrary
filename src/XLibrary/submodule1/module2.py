@@ -81,6 +81,70 @@ class XDrint:
         results = list(cursor)
         return results
       
+      
+    @keyword("XQuery Dynamic Value")
+    def query_dynamic_value(self, result, field='None', value='None', expect=None):
+        """
+        ***|    Description     |***
+        |   *`XQuery Dynamic Value`*   |   เป็น Keyword สำหรับ Query ข้อมูลใน Collection แบบเจาะลงไป |
+ 
+       
+        ***|    Example     |***
+        | *`${arpu_value}`* | *`XQuery Dynamic Value`* | *`result`* | *`productCharacteristic`* | *`name`* | *`arpu`* |
+        | *`Log`* | *`${arpu_value}`* |
+ 
+       
+        ***|    Parameters     |***
+        - **`result`**  ผลลัพธ์ของการ Query ที่เป็นรายการข้อมูลจาก MongoDB.
+        - **`field`**   ชื่อฟิลด์ในข้อมูลที่ต้องการเจาะลงไป.
+        - **`value`**   ชื่อคีย์ภายในฟิลด์ที่ต้องการเข้าถึง.
+        - **`expect`**  ค่าที่ต้องการเทียบเพื่อหาข้อมูลที่ตรงกับเงื่อนไข.
+ 
+ 
+        *`Create By Tassana Khrueawan`*
+        """
+        for item in result:
+            if field in item and isinstance(item[field], list):
+                if expect:
+                    for char in item[field]:
+                        if char.get(value) == expect:
+                            return char.get('value')
+                else:
+                    return item[field]
+        return None
+ 
+ 
+    @keyword("XQuery Specific Value")
+    def query_specific_value(self, result, field_name=None):
+        """
+        ***|    Description     |***
+        |   XQuery Specific Value   |   Keyword สำหรับ Query ข้อมูลใน Collection แบบไม่เจาะลงไป |
+ 
+       
+        ***|    Example     |***
+        | *`${name}`* | *`XQuery Specific Value`* | *`result`* | *`name`* |
+        | *`Log`* | *`${name}`* |
+ 
+ 
+        ***|    Parameters     |***
+        - **`result`**  ผลลัพธ์ของการ Query ที่เป็นรายการข้อมูลจาก MongoDB.
+        - **`field_name`**   ชื่อฟิลด์ที่ต้องการเข้าถึงเพื่อค้นหาค่าภายใน.
+ 
+ 
+        *`Create By Tassana Khrueawan`*
+        """
+        if not field_name:
+            return result
+ 
+        results = []
+        if isinstance(result, list):
+            for doc in result:
+                if isinstance(doc, dict) and field_name in doc:
+                    results.append(doc[field_name])
+        else:
+            results = result.get(field_name, None)
+ 
+        return results  
 
     @keyword("XConvert BSON Document to JSON Object")
     def bson_to_json_object(self, bson_data):
