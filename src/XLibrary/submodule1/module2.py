@@ -52,21 +52,19 @@ class XDrint:
     def query_mongodb(self, database_name, collection_name, query, limit=None, sort=None):
         """
         ***|    Description     |***
-        |   *`Query MongoDB`*   |   เป็น Keyword สำหรับ Query ข้อมูลใน Collection พร้อมกับการกำหนดจำนวนข้อมูลสูงสุดและการเรียงลำดับข้อมูล |
-
-        
+        |   *`Query MongoDB`*   |   เป็น Keyword สำหรับ Query ข้อมูลใน Collection พร้อมกับการกำหนดจำนวนข้อมูลสูงสุดและการเรียงลำดับข้อมูล. สำหรับการเรียงลำดับข้อมูล, คุณต้องสร้าง list ของ string และแปลงเป็น tuple ในฟังก์ชัน Python ของคุณ.|
+    
         ***|    Example     |***
-        | *`${result}`* | *`Query MongoDB`* | *`database_name`* | *`collection_name`* | *`Command Query`* | *`limit=5`* | *`sort=[("date", -1)]`* |
+        | *`${result}`* | *`Query MongoDB`* | *`database_name`* | *`collection_name`* | *`Command Query`* | *`limit=5`* | *`sort=_id,-1`* |
         | *`Log`* | *`${result}`* |
-
-        
+    
         ***|    Parameters     |***
-            - **`database_name`**  ชื่อของฐานข้อมูล.
-            - **`collection_name`**  ชื่อของ collection.
-            - **`query`**  คำสั่ง Query.
-            - **`limit`**  (Optional) จำนวนข้อมูลสูงสุดที่ต้องการส่งกลับ.
-            - **`sort`**  (Optional) ลำดับข้อมูล ตัวอย่างเช่น [("field", -1 มากไปน้อย ,  1 น้อยไปมาก)].
-
+        - **`database_name`**  ชื่อของฐานข้อมูล.
+        - **`collection_name`**  ชื่อของ collection.
+        - **`query`**  คำสั่ง Query.
+        - **`limit`**  (Optional) จำนวนข้อมูลสูงสุดที่ต้องการส่งกลับ.
+        - **`sort`**  (Optional) ลำดับข้อมูล ตัวอย่างเช่น _id,-1 (แทนที่ "_id" คือ field ที่ต้องการเรียงลำดับ และ "-1" คือ การเรียงลำดับจากมากไปน้อย, "1" คือ การเรียงลำดับจากน้อยไปมาก).
+    
         *`Create By Tassana Khrueawan`*
         """
         collection = self._dbconnection[database_name][collection_name]
@@ -74,10 +72,12 @@ class XDrint:
         cursor = collection.find(query_dict)
         
         if sort:
+            sort_field, sort_order = sort.split(',')
+            sort = [(sort_field, int(sort_order))]
             cursor = cursor.sort(sort)
         if limit:
-            cursor = cursor.limit(limit)
-
+            cursor = cursor.limit(int(limit))
+    
         results = list(cursor)
         return results
       
