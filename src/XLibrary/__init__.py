@@ -2,36 +2,30 @@
 # -*- coding: utf-8 -*-
 from robot.api.deco import keyword
 from .main import MainClass
-from .submodule1 import XPrint
-from .submodule1 import XDrint
-from .submodule2 import Module21
+from .submodule1 import XAppiumFlutter
+from .submodule1 import XMongoDB
+from .submodule2 import XLog
 from .submodule2 import Module22
 
 
  
-__all__ = [ 'XLibrary','MainClass', 'XPrint', 'XDrint','Module21', 'Module22']
+__all__ = [ 'XLibrary','MainClass', 'XAppiumFlutter', 'XMongoDB','XLog', 'Module22']
 
 
 
 class XLibrary(
     MainClass,
-    XPrint, 
-    XDrint,
-    Module21,
+    XAppiumFlutter, 
+    XMongoDB,
+    XLog,
     Module22
     ):
     """ 
-    *` XLibrary เป็น Library Custom ขึ้้นมาใช้เองโดยเฉพาะ`*
-    *`Create By Tassana Khrueawan`*
+    *` XLibrary `* เป็นไลบรารีที่พัฒนาขึ้นเฉพาะ เพื่อรองรับการใช้งานส่วนบุคคลในงานพัฒนา Script Automate
     """
 
-
+    @keyword("Hello World")
     def TTTTTT(self):
-        """ พิมพ์ข้อความ 'Hello, world!' ลงในคอนโซล แบบไม่ได้แอดคีย์ """
-        print("Hello, world! เทสภาษาไทยfdsafadsfsadfdsafdsa")
+        """ พิมพ์ข้อความ 'Hello, world!' ลงในคอนโซล """
+        print("Hello, world!")
 
-
-    @keyword("Hello world12")
-    def Hello12(self):
-        """ พิมพ์ข้อความ 'Hello, world!' ลงในคอนโซล แบบแอดคีย์ """
-        print("Hello, world! Test keyword='Hello, world!'")

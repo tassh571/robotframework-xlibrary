@@ -5,16 +5,21 @@ from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 from robot.api import logger
 
-class Module21:
+class XLog:
     def __init__(self):
+        # กำหนดค่าเริ่มต้นของการบันทึก Log
         logging.basicConfig(level=logging.INFO, format='%(message)s')
         self.builtin = BuiltIn()
 
-    def PrintTEST21(self):
-        """ พิมพ์ข้อความ 'Hello, world!' ลงในคอนโซล แบบไม่ได้แอดคีย์ """
-        print("Hello, world! เทสภาษาไทย111")
-
     def log_tree_structure(self, data, level=0, prefix=''):
+        """
+        ฟังก์ชันช่วยสำหรับการแสดงโครงสร้างข้อมูลในรูปแบบต้นไม้ (Tree Structure)
+        
+        พารามิเตอร์:
+        - data: ข้อมูลที่ต้องการแสดง
+        - level: ระดับของการแสดงผล (ใช้สำหรับการจัดเรียง)
+        - prefix: คำนำหน้าข้อมูล (ถ้ามี)
+        """
         indent = "│   " * level
         branch = "├── " if level > 0 else ""
         if isinstance(data, dict):
@@ -43,30 +48,11 @@ class Module21:
         
 
         ***|    Parameters     |***
-            - **`data`**  ข้อมูล Json.
+        - **`data`**: ข้อมูล JSON.
 
-
-       *`Create By Tassana Khrueawan`*
+        
+        *`Create By Tassana Khrueawan`*
         """
+        # เรียกใช้ฟังก์ชัน log_tree_structure เพื่อแสดงโครงสร้างข้อมูลในรูปแบบต้นไม้
         self.log_tree_structure(data)
 
-
-    @keyword("Log Pass")
-    def log_pass(self, message):
-        """
-        ***|    Description     |***
-        |   *`Log Pass`*   |   Log Pass เป็น Keyword สำหรับการทำให้ ข้อความเด่นขึ้น |
-
-
-        ***|    Example     |***
-        | *`Log Pass`* | *`This test passed successfully!`* |
-
-
-        ***|    Parameters     |***
-        - **`message`**  ข้อความ
-
-
-        Created by Tassana Khrueawan
-        """
-        highlighted_message = f'<div style="background-color: green; color: white; padding: 7px;">PASS: {message}</div>'
-        logger.write(highlighted_message, html=True)

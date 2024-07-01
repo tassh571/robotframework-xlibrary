@@ -8,15 +8,10 @@ import bson
 
 
 
-class XDrint:
+class XMongoDB:
 
     def __init__(self):
         self._dbconnection = None
-
-
-    def CDCDCD(self):
-        print("Hello, world! เทสภาษาไทย222")
-
 
     @keyword("XConnect Mongodb With URL")
     def connect_to_mongodb_with_uri(self, dbURI, timeout=10):
@@ -30,14 +25,16 @@ class XDrint:
         
 
         ***|    Parameters     |***
-            - **`dbURI`**  URL สำหรับการเชื่อมต่อไปยัง MongoDB.
-            - **`timeout`**  ตั้งเวลา TimeOut ในการเชื่อมต่อไปยัง MongoDB.
+        - **`dbURI`**: URL สำหรับการเชื่อมต่อไปยัง MongoDB.
+        - **`timeout`**: ตั้งเวลา TimeOut ในการเชื่อมต่อไปยัง MongoDB.
 
-            
-       *`Create By Tassana Khrueawan`*
+        
+        *`Create By Tassana Khrueawan`*
         """
         try:
+            # สร้างการเชื่อมต่อกับ MongoDB โดยใช้ URI และตั้งเวลา timeout
             self._dbconnection = pymongo.MongoClient(dbURI, serverSelectionTimeoutMS=timeout*1000)
+            # ตรวจสอบการเชื่อมต่อ
             self._dbconnection.server_info()
             logging.debug("| Succeed: เชื่อมต่อกับ MongoDB โดยใช้ URI | %s |" % dbURI)
         except pymongo.errors.ServerSelectionTimeoutError as e:
@@ -46,42 +43,47 @@ class XDrint:
         except Exception as e:
             logging.error("| Fail: การเชื่อมต่อ MongoDB ล้มเหลว | %s |" % str(e))
             raise Exception("การเชื่อมต่อ MongoDB ล้มเหลว: " + str(e))
-        
 
     @keyword("XQuery MongoDB")
     def query_mongodb(self, database_name, collection_name, query, limit=None, sort=None):
         """
         ***|    Description     |***
         |   *`Query MongoDB`*   |   เป็น Keyword สำหรับ Query ข้อมูลใน Collection พร้อมกับการกำหนดจำนวนข้อมูลสูงสุดและการเรียงลำดับข้อมูล. สำหรับการเรียงลำดับข้อมูล, คุณต้องสร้าง list ของ string และแปลงเป็น tuple ในฟังก์ชัน Python ของคุณ.|
-    
+        
         ***|    Example     |***
         | *`${result}`* | *`Query MongoDB`* | *`database_name`* | *`collection_name`* | *`Command Query`* | *`limit=5`* | *`sort=_id,-1`* |
         | *`Log`* | *`${result}`* |
-    
+        
         ***|    Parameters     |***
-        - **`database_name`**  ชื่อของฐานข้อมูล.
-        - **`collection_name`**  ชื่อของ collection.
-        - **`query`**  คำสั่ง Query.
-        - **`limit`**  (Optional) จำนวนข้อมูลสูงสุดที่ต้องการส่งกลับ.
-        - **`sort`**  (Optional) ลำดับข้อมูล ตัวอย่างเช่น _id,-1 (แทนที่ "_id" คือ field ที่ต้องการเรียงลำดับ และ "-1" คือ การเรียงลำดับจากมากไปน้อย, "1" คือ การเรียงลำดับจากน้อยไปมาก).
-    
+        - **`database_name`**: ชื่อของฐานข้อมูล.
+        - **`collection_name`**: ชื่อของ collection.
+        - **`query`**: คำสั่ง Query.
+        - **`limit`**: (Optional) จำนวนข้อมูลสูงสุดที่ต้องการส่งกลับ.
+        - **`sort`**: (Optional) ลำดับข้อมูล ตัวอย่างเช่น _id,-1 (แทนที่ "_id" คือ field ที่ต้องการเรียงลำดับ และ "-1" คือ การเรียงลำดับจากมากไปน้อย, "1" คือ การเรียงลำดับจากน้อยไปมาก).
+        
         *`Create By Tassana Khrueawan`*
         """
+        # ดึง collection ที่ต้องการจากฐานข้อมูล
         collection = self._dbconnection[database_name][collection_name]
+        # แปลงคำสั่ง Query จาก string เป็น dictionary
         query_dict = ast.literal_eval(query)
+        # เริ่มการ Query ข้อมูล
         cursor = collection.find(query_dict)
         
+        # ถ้ามีการกำหนดลำดับข้อมูล
         if sort:
             sort_field, sort_order = sort.split(',')
             sort = [(sort_field, int(sort_order))]
             cursor = cursor.sort(sort)
+        
+        # ถ้ามีการกำหนดจำนวนข้อมูลสูงสุด
         if limit:
             cursor = cursor.limit(int(limit))
-    
+        
+        # ส่งคืนผลลัพธ์ในรูปแบบ list
         results = list(cursor)
         return results
-      
-      
+
     @keyword("XQuery Dynamic Value")
     def query_dynamic_value(self, result, field='None', value='None', expect=None):
         """
@@ -112,7 +114,6 @@ class XDrint:
                 else:
                     return item[field]
         return None
- 
  
     @keyword("XQuery Specific Value")
     def query_specific_value(self, result, field_name=None):
@@ -149,44 +150,29 @@ class XDrint:
     @keyword("XConvert BSON Document to JSON Object")
     def bson_to_json_object(self, bson_data):
         """
-        แปลงข้อมูล BSON เป็นอ็อบเจกต์ Python (dictionary หรือ list) โดยไม่ต้องแปลงเป็นสตริง JSON
+        ***|    Description     |***
+        |   *`Convert BSON Document to JSON Object`*   |   แปลงข้อมูล BSON เป็นอ็อบเจกต์ Python (dictionary หรือ list) โดยไม่ต้องแปลงเป็นสตริง JSON |
 
-        พารามิเตอร์:
-        - bson_data: ข้อมูล BSON ในรูปแบบไบต์สตริงหรือดิกชันนารี
+        
+        ***|    Example     |***
+        | *`${json_object}`* | *`Convert BSON Document to JSON Object`* | *`${bson_data}`* |
+        
 
-        ผลลัพธ์ที่ได้:
-        - อ็อบเจกต์ Python ซึ่งอาจเป็นดิกชันนารีหรือลิสต์ของดิกชันนารีที่แสดงถึงข้อมูล BSON
+        ***|    Parameters     |***
+        - **`bson_data`**: ข้อมูล BSON ในรูปแบบไบต์สตริงหรือดิกชันนารี.
 
-        ตัวอย่างการใช้งาน:
-        | ${json_object} = | Convert BSON Document to JSON Object | ${bson_data} |
+        
+        ***|    Returns     |***
+        - อ็อบเจกต์ Python ซึ่งอาจเป็นดิกชันนารีหรือลิสต์ของดิกชันนารีที่แสดงถึงข้อมูล BSON.
+
+        
+        *`Create By Tassana Khrueawan`*
         """
         try:
+            # ตรวจสอบว่าข้อมูล BSON เป็นไบต์สตริง
             if isinstance(bson_data, bytes):
                 bson_data = bson.loads(bson_data)
-            # Convert BSON directly to a Python object without converting to a JSON string
-            return bson_data  # This returns a Python dictionary or list of dictionaries
-        except Exception as e:
-            return f"Failed to convert BSON to JSON object: {str(e)}"
-        
-        
-    @keyword("Convert BSON Document to JSON Object")
-    def Convert_BSON_to_JSON_Object(self, bson_data):
-        """
-        แปลงข้อมูล BSON เป็นอ็อบเจกต์ Python (dictionary หรือ list) โดยไม่ต้องแปลงเป็นสตริง JSON
-
-        พารามิเตอร์:
-        - bson_data: ข้อมูล BSON ในรูปแบบไบต์สตริงหรือดิกชันนารี
-
-        ผลลัพธ์ที่ได้:
-        - อ็อบเจกต์ Python ซึ่งอาจเป็นดิกชันนารีหรือลิสต์ของดิกชันนารีที่แสดงถึงข้อมูล BSON
-
-        ตัวอย่างการใช้งาน:
-        | ${json_object} = | Convert BSON Document to JSON Object | ${bson_data} |
-        """
-        try:
-            if isinstance(bson_data, bytes):
-                bson_data = bson.loads(bson_data)
-            # Convert BSON directly to a Python object without converting to a JSON string
-            return bson_data  # This returns a Python dictionary or list of dictionaries
+            # แปลงข้อมูล BSON เป็นอ็อบเจกต์ Python โดยตรง
+            return bson_data  # คืนค่าเป็น Python dictionary หรือ list ของ dictionary
         except Exception as e:
             return f"Failed to convert BSON to JSON object: {str(e)}"
