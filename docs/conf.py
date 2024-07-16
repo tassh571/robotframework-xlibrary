@@ -21,9 +21,9 @@ project = 'RobotFramework-XLibrary'
 author = 'Tassana Khrueawan'
 copyright = '2024, Tassana Khrueawan'
 # เวอร์ชันสั้น X.Y
-version = '11.0.12'
+version = '12.0.0'
 # เวอร์ชันเต็ม, รวมถึง alpha/beta/rc tags
-release = '11.0.12'
+release = '12.0.0'
 
 # -- General configuration ---------------------------------------------------
 

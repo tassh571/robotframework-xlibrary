@@ -2,6 +2,10 @@
 from robot.api.deco import keyword
 from robot.libraries.BuiltIn import BuiltIn
 from AppiumFlutterLibrary.finder import ElementFinder
+import json
+import requests
+import logging
+
 
 class XAppiumFlutter:
     def __init__(self):
@@ -72,6 +76,21 @@ class XAppiumFlutter:
         """
         # ดึงและคืนค่าอินสแตนซ์ของแอปพลิเคชันปัจจุบันจาก AppiumFlutterLibrary
         return self._bi.get_library_instance('AppiumFlutterLibrary')._current_application()
+    
+    @keyword("XGet Session ID")
+    def xget_session_id(self):
+        """
+        ***|    Description     |***
+        |   *`get_appium_session_id`*   |   คืนค่า session_id ของแอปพลิเคชันปัจจุบัน |
+
+        ***|    Parameters     |***
+        - ไม่มีพารามิเตอร์
+
+        *`Create By Tassana Khrueawan`*
+        """
+        driver = self._current_application()
+        session_id = driver.session_id
+        return session_id
 
     @keyword("XSwipe")
     def swipe_on_screen(self, start_x, start_y, end_x, end_y, duration=800):
@@ -167,3 +186,71 @@ class XAppiumFlutter:
         finally:
             # สลับกลับไปยังคอนเทคซ์ FLUTTER
             driver.switch_to.context('FLUTTER')
+
+    @keyword("XSend Status To BrowserStack")
+    def send_status_to_browserstack(self):
+        """
+        ***|    Description     |***
+        |   *`XSend Status To BrowserStack`*   |   ส่งสถานะและข้อความไปยัง BrowserStack ตาม session_id, status, และ message ที่กำหนด |
+
+        ***|    Example     |***
+        | *`XSend Status To BrowserStack`* |
+
+        ***|    Parameters     |***
+        - ไม่มีพารามิเตอร์
+
+        *`Create By Tassana Khrueawan`*
+        """
+        # ประกาศค่า variables ที่ใช้ในการเชื่อมต่อกับ BrowserStack
+        BROWSERSTACK_USERNAME = 'juralakp_p2Vx0U'
+        BROWSERSTACK_ACCESS_KEY = 'PPed2Tj3ZNZqaGw6kLyw'
+        BROWSERSTACK_URL = f"https://{BROWSERSTACK_USERNAME}:{BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub"
+
+        # ดึงค่า session_id จากตัวแปรของ Robot Framework
+        session_id = BuiltIn().get_variable_value("${SESSION_ID}")
+
+        # ดึงค่า TEST STATUS และ TEST MESSAGE จาก Robot Framework
+        test_status = BuiltIn().get_variable_value("${TEST STATUS}")
+        test_message = BuiltIn().get_variable_value("${TEST MESSAGE}")
+
+        # ถ้า TEST STATUS หรือ TEST MESSAGE เป็น None ให้ดึงข้อมูลจาก get_variables
+        if not test_status or not test_message:
+            variables = BuiltIn().get_variables()
+            test_status = variables.get("${TEST STATUS}", "FAIL")
+            test_message = variables.get("${TEST MESSAGE}", "")
+
+        # ตรวจสอบค่า test_status และ test_message
+        logging.info(f"Test Status: {test_status}")
+        logging.info(f"Test Message: {test_message}")
+
+        # กำหนดสถานะการทดสอบเป็น "passed" ถ้าผลลัพธ์คือ "PASS" มิฉะนั้นจะเป็น "failed"
+        status = "passed" if test_status == "PASS" else "failed"
+
+        # กำหนดข้อความเป็น "PASS" ถ้าสถานะคือ "passed" มิฉะนั้นจะใช้ข้อความจาก test_message
+        message = "PASS" if status == "passed" else test_message
+
+        # Log the status and message for debugging
+        logging.info(f"Sending to BrowserStack: status={status}, message={message}")
+
+        # สร้าง URL สำหรับการส่งคำขอไปยัง BrowserStack
+        url = f"{BROWSERSTACK_URL}/session/{session_id}/execute"
+
+        # สร้าง payload ในรูปแบบ JSON ที่จะส่งไปยัง BrowserStack
+        payload = json.dumps({
+            "script": f'browserstack_executor: {{"action": "setSessionStatus", "arguments": {{"status": "{status}", "reason": "{message}"}}}}',
+            "args": []
+        })
+
+        # ตั้งค่า headers สำหรับคำขอ HTTP POST
+        headers = {
+            'Content-Type': 'application/json'
+        }
+
+        # ส่งคำขอ HTTP POST ไปยัง BrowserStack
+        response = requests.post(url, headers=headers, data=payload)
+
+        # ตรวจสอบสถานะการตอบกลับและบันทึกข้อมูล
+        if response.status_code == 200:
+            logging.info(f"Successfully sent status to BrowserStack: {status}, {message}")
+        else:
+            logging.error(f"Failed to send status to BrowserStack: {response.status_code}, {response.content}")

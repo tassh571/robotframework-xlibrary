@@ -5,11 +5,11 @@ from .main import MainClass
 from .submodule1 import XAppiumFlutter
 from .submodule1 import XMongoDB
 from .submodule2 import XLog
-from .submodule2 import Module22
+from .submodule2 import XImages
 
 
  
-__all__ = [ 'XLibrary','MainClass', 'XAppiumFlutter', 'XMongoDB','XLog', 'Module22']
+__all__ = [ 'XLibrary','MainClass', 'XAppiumFlutter', 'XMongoDB','XLog', 'XImages']
 
 
 
@@ -18,7 +18,7 @@ class XLibrary(
     XAppiumFlutter, 
     XMongoDB,
     XLog,
-    Module22
+    XImages
     ):
     """ 
     *` XLibrary `* เป็นไลบรารีที่พัฒนาขึ้นเฉพาะ เพื่อรองรับการใช้งานส่วนบุคคลในงานพัฒนา Script Automate

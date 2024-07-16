@@ -2,4 +2,4 @@
 # -*- coding: utf-8 -*-
 
 from .module1 import XLog
-from .module2 import Module22
+from .module2 import XImages

@@ -5,6 +5,7 @@ import ast
 import pymongo
 import logging
 import bson
+import json
 
 
 
@@ -13,36 +14,36 @@ class XMongoDB:
     def __init__(self):
         self._dbconnection = None
 
-    @keyword("XConnect Mongodb With URL")
-    def connect_to_mongodb_with_uri(self, dbURI, timeout=10):
-        """
-        ***|    Description     |***
-        | *`Connect Mongodb With URL`* | เป็น Keyword ไว้เชื่อมต่อกับ MongoDB โดยใช้ URI โดยเฉพาะ |
+        @keyword("XConnect Mongodb With URL")
+        def connect_to_mongodb_with_uri(self, dbURI, timeout=10):
+            """
+            ***|    Description     |***
+            | *`Connect Mongodb With URL`* | เป็น Keyword ไว้เชื่อมต่อกับ MongoDB โดยใช้ URI โดยเฉพาะ |
 
-        
-        ***|    Example     |***
-        | *`Connect Mongodb With URL`* | *`mongodb+srv://username:password@host`* | *`timeout=10`* |
-        
+            
+            ***|    Example     |***
+            | *`Connect Mongodb With URL`* | *`mongodb+srv://username:password@host`* | *`timeout=10`* |
+            
 
-        ***|    Parameters     |***
-        - **`dbURI`**: URL สำหรับการเชื่อมต่อไปยัง MongoDB.
-        - **`timeout`**: ตั้งเวลา TimeOut ในการเชื่อมต่อไปยัง MongoDB.
+            ***|    Parameters     |***
+            - **`dbURI`**: URL สำหรับการเชื่อมต่อไปยัง MongoDB.
+            - **`timeout`**: ตั้งเวลา TimeOut ในการเชื่อมต่อไปยัง MongoDB.
 
-        
-        *`Create By Tassana Khrueawan`*
-        """
-        try:
-            # สร้างการเชื่อมต่อกับ MongoDB โดยใช้ URI และตั้งเวลา timeout
-            self._dbconnection = pymongo.MongoClient(dbURI, serverSelectionTimeoutMS=timeout*1000)
-            # ตรวจสอบการเชื่อมต่อ
-            self._dbconnection.server_info()
-            logging.debug("| Succeed: เชื่อมต่อกับ MongoDB โดยใช้ URI | %s |" % dbURI)
-        except pymongo.errors.ServerSelectionTimeoutError as e:
-            logging.error("| Fail: การเชื่อมต่อ MongoDB ล้มเหลว เนื่องจาก TimeOut | %s |" % str(e))
-            raise Exception("การเชื่อมต่อ MongoDB ล้มเหลว เนื่องจาก TimeOut")
-        except Exception as e:
-            logging.error("| Fail: การเชื่อมต่อ MongoDB ล้มเหลว | %s |" % str(e))
-            raise Exception("การเชื่อมต่อ MongoDB ล้มเหลว: " + str(e))
+            
+            *`Create By Tassana Khrueawan`*
+            """
+            try:
+                # สร้างการเชื่อมต่อกับ MongoDB โดยใช้ URI และตั้งเวลา timeout
+                self._dbconnection = pymongo.MongoClient(dbURI, serverSelectionTimeoutMS=timeout*1000)
+                # ตรวจสอบการเชื่อมต่อ
+                self._dbconnection.server_info()
+                logging.debug("| Succeed: เชื่อมต่อกับ MongoDB โดยใช้ URI | %s |" % dbURI)
+            except pymongo.errors.ServerSelectionTimeoutError as e:
+                logging.error("| Fail: การเชื่อมต่อ MongoDB ล้มเหลว เนื่องจาก TimeOut | %s |" % str(e))
+                raise Exception("การเชื่อมต่อ MongoDB ล้มเหลว เนื่องจาก TimeOut")
+            except Exception as e:
+                logging.error("| Fail: การเชื่อมต่อ MongoDB ล้มเหลว | %s |" % str(e))
+                raise Exception("การเชื่อมต่อ MongoDB ล้มเหลว: " + str(e))
 
     @keyword("XQuery MongoDB")
     def query_mongodb(self, database_name, collection_name, query, limit=None, sort=None):
@@ -176,3 +177,35 @@ class XMongoDB:
             return bson_data  # คืนค่าเป็น Python dictionary หรือ list ของ dictionary
         except Exception as e:
             return f"Failed to convert BSON to JSON object: {str(e)}"
+        
+
+    @keyword("XCreate JSON String")
+    def create_json_string(self, status, reason):
+        """
+        ***|    Description     |***
+        |   *`XCreate JSON String`*   |   สร้าง JSON สตริงสำหรับการตั้งสถานะของเซสชั่นใน BrowserStack โดยการรับสถานะและเหตุผล |
+
+        
+        ***|    Example     |***
+        | *`${json_string}`* | *`XCreate JSON String`* | *`passed`* | *`Test completed successfully`* |
+        
+
+        ***|    Parameters     |***
+        - **`status`**: สถานะของเซสชั่น เช่น "passed" หรือ "failed".
+        - **`reason`**: เหตุผลที่ตั้งสถานะนี้ เช่น "Test completed successfully".
+
+        
+        ***|    Returns     |***
+        - JSON สตริงที่มีข้อมูลเกี่ยวกับการตั้งสถานะของเซสชั่นใน BrowserStack.
+
+        
+        *`Create By Tassana Khrueawan`*
+        """
+        try:
+            data = {
+                "script": f'browserstack_executor: {{"action": "setSessionStatus", "arguments": {{"status": "{status}", "reason": "{reason}"}}}}',
+                "args": []
+            }
+            return json.dumps(data)
+        except Exception as e:
+            return f"Failed to create JSON string: {str(e)}"

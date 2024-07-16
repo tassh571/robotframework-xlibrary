@@ -4,20 +4,16 @@ import cv2
 import numpy as np
 from robot.api.deco import keyword
 
-class Module22:
-    def PrintTEST22(self):
-        """ พิมพ์ข้อความ 'Hello again!' ลงในคอนโซล """
-        print("Hello again!")
-
-    @keyword('Compare Images')
+class XImages:
+    @keyword('XCompare Images')
     def compare_images(self, image_path1, image_path2):
         """
         ***|    Description     |***
-        |   *`Compare Images`*   |   เปรียบเทียบภาพสองภาพและคืนค่าเปอร์เซ็นต์ความเหมือน |
+        |   *`XCompare Images`*   |   เปรียบเทียบภาพสองภาพและคืนค่าเปอร์เซ็นต์ความเหมือน |
 
         
         ***|    Example     |***
-        | *`Compare Images`* | *`path_to_image1.jpg`* | *`path_to_image2.jpg`* |
+        | *`XCompare Images`* | *`path_to_image1.jpg`* | *`path_to_image2.jpg`* |
 
 
         ***|    Parameters     |***

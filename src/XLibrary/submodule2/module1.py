@@ -36,15 +36,15 @@ class XLog:
         else:
             logging.info(f"{indent}{branch}{prefix}{data}")
 
-    @keyword("Log Tree Data")
+    @keyword("XLog Tree Data")
     def log_tree_data(self, data):
         """ 
         ***|    Description     |***
-        |   *`Log Tree Data`*   |   เป็น Keyword สำหรับ Log Data ให้ออกมาเป็น Tree Data |
+        |   *`XLog Tree Data`*   |   เป็น Keyword สำหรับ Log Data ให้ออกมาเป็น Tree Data |
 
 
         ***|    Example     |***
-        | *`Log Tree Data`* | *`${value}`* |
+        | *`XLog Tree Data`* | *`${value}`* |
         
 
         ***|    Parameters     |***
