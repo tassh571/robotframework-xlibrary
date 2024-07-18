@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="robotframework-xlibrary",
-    version="12.0.1",
+    version="12.0.2",
     author="Tassana Khrueawan",
     author_email="tassana.khr@gmail.com",
     description="Library Custom For Automate",

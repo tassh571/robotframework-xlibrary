@@ -3,7 +3,7 @@
 from robot.api.deco import keyword
 import requests
 
-class GoogleSheet:
+class XGoogleSheet:
     @keyword("XLog Data Google Sheet")
     def log_data_google_sheet(self, api_key, spreadsheet_id, data_row_number):
         """
