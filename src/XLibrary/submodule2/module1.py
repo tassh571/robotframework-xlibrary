@@ -11,7 +11,7 @@ class XLog:
         logging.basicConfig(level=logging.INFO, format='%(message)s')
         self.builtin = BuiltIn()
 
-    def log_tree_structure(self, data, level=0, prefix=''):
+    def _log_tree_structure(self, data, level=0, prefix=''):
         """
         ฟังก์ชันช่วยสำหรับการแสดงโครงสร้างข้อมูลในรูปแบบต้นไม้ (Tree Structure)
         
@@ -26,13 +26,13 @@ class XLog:
             for key, value in data.items():
                 if isinstance(value, (dict, list)):
                     logging.info(f"{indent}{branch}{key}")
-                    self.log_tree_structure(value, level + 1)
+                    self._log_tree_structure(value, level + 1)
                 else:
                     logging.info(f"{indent}{branch}{key}: {value}")
         elif isinstance(data, list):
             for i, item in enumerate(data):
                 logging.info(f"{indent}├── [{i}]")
-                self.log_tree_structure(item, level + 1)
+                self._log_tree_structure(item, level + 1)
         else:
             logging.info(f"{indent}{branch}{prefix}{data}")
 
@@ -53,6 +53,6 @@ class XLog:
         
         *`Create By Tassana Khrueawan`*
         """
-        # เรียกใช้ฟังก์ชัน log_tree_structure เพื่อแสดงโครงสร้างข้อมูลในรูปแบบต้นไม้
-        self.log_tree_structure(data)
+        # เรียกใช้ฟังก์ชัน _log_tree_structure เพื่อแสดงโครงสร้างข้อมูลในรูปแบบต้นไม้
+        self._log_tree_structure(data)
 

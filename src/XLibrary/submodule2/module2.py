@@ -23,7 +23,7 @@ class XImages:
         ***|    Returns     |***
         - **`similarity_percentage`**: เปอร์เซ็นต์ความเหมือนของภาพสองภาพ
 
-        *`Create By Your Name`*
+        *`Create By Tassana Khrueawan`*
         """
         # โหลดภาพทั้งสอง
         img1 = cv2.imread(image_path1)
