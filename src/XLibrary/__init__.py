@@ -8,10 +8,11 @@ from .submodule2 import XLog
 from .submodule2 import XImages
 from .submodule2 import XGoogleSheet
 from .submodule2 import XExcal
+from .submodule2 import XAPI
 
 
  
-__all__ = [ 'XLibrary','MainClass', 'XAppiumFlutter', 'XMongoDB','XLog', 'XImages','XGoogleSheet','XExcal']
+__all__ = [ 'XLibrary','MainClass', 'XAppiumFlutter', 'XMongoDB','XLog', 'XImages','XGoogleSheet','XExcal','XAPI']
 
 
 
@@ -22,7 +23,8 @@ class XLibrary(
     XLog,
     XImages,
     XGoogleSheet,
-    XExcal
+    XExcal,
+    XAPI
     ):
     """ 
     *` XLibrary `* เป็นไลบรารีที่พัฒนาขึ้นเฉพาะ เพื่อรองรับการใช้งานส่วนบุคคลในงานพัฒนา Script Automate
